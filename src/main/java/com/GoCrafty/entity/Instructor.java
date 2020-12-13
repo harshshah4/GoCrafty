@@ -1,15 +1,22 @@
 package com.GoCrafty.entity;
 
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "instructor_details")
-public class Instructor {
+public class Instructor extends User{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +39,23 @@ public class Instructor {
 	private byte[] profilePic;
 	
 	@Column(name = "recruiter")
-	private int recruiter;
+	private String recruiter;
 	
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
+
 	@Column(name = "logs")
 	private String logs;
+	
+	@OneToMany(fetch = FetchType.LAZY,
+			cascade = {CascadeType.ALL})
+	@JoinColumn(name ="instructor_id")
+	private List<Course> courses;
 	
 	public Instructor() {}
 
@@ -87,11 +107,11 @@ public class Instructor {
 		this.profilePic = profilePic;
 	}
 
-	public int getRecruiter() {
+	public String getRecruiter() {
 		return recruiter;
 	}
 
-	public void setRecruiter(int recruiter) {
+	public void setRecruiter(String recruiter) {
 		this.recruiter = recruiter;
 	}
 
@@ -103,16 +123,14 @@ public class Instructor {
 		this.logs = logs;
 	}
 
-	public Instructor(String firstName, String lastName, String email, String password, byte[] profilePic,
-			int recruiter, String logs) {
+	public Instructor(String firstName, String lastName, String email, String password,
+			String recruiter) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.profilePic = profilePic;
 		this.recruiter = recruiter;
-		this.logs = logs;
 	}
 	
 	

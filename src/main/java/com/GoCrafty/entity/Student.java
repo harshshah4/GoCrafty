@@ -1,15 +1,21 @@
 package com.GoCrafty.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "student_details")
-public class Student {
+public class Student extends User{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +42,23 @@ public class Student {
 	private byte[] profilePic;
 	
 	@Column(name = "apply_for_job")
-	private int applyForJob;
+	private String applyForJob;
 	
 	@Column(name = "logs")
 	private String logs;
+	
+	@OneToMany(fetch = FetchType.EAGER,
+			cascade = {CascadeType.ALL})
+	@JoinColumn(name ="student_id")
+	private List<CourseEnrolled> courses;
+
+	public List<CourseEnrolled> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<CourseEnrolled> courses) {
+		this.courses = courses;
+	}
 
 	public int getId() {
 		return id;
@@ -97,11 +116,11 @@ public class Student {
 		this.profilePic = profilePic;
 	}
 
-	public int getApplyForJob() {
+	public String getApplyForJob() {
 		return applyForJob;
 	}
 
-	public void setApplyForJob(int applyForJob) {
+	public void setApplyForJob(String applyForJob) {
 		this.applyForJob = applyForJob;
 	}
 
@@ -114,18 +133,22 @@ public class Student {
 	}
 	public Student() {
 	}
+	
+
+
 	public Student(String firstName, String lastName, String email, String password, String birthDate,
-			byte[] profilePic, int applyForJob, String logs) {
-		super();
+			String applyForJob) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 		this.birthDate = birthDate;
-		this.profilePic = profilePic;
 		this.applyForJob = applyForJob;
-		this.logs = logs;
 	}
+	
+	
+
+	
 	
 	
 	

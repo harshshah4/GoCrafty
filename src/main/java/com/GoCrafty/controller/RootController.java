@@ -13,6 +13,7 @@ public class RootController {
 	public String showHomePage(HttpSession session) {
 		HashMap<String, String> tempSession = new HashMap<String, String>();
 		tempSession.put("id", "temp");
+		tempSession.put("retry","0");
 		session.setAttribute("tempSession", tempSession);
 		return "home-page";
 	}
